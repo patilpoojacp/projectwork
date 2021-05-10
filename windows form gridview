@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace SimpleForm
+{
+    public partial class Form1 : Form
+    {
+        List<Vehicle> lstVehicle = new List<Vehicle>();
+        private int year=2020;
+        Vehicle objVehicle = new Vehicle();
+        
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                
+
+                if (Int.IsNullOrWhiteSpace(txtEngineNumber.Text))
+                {
+                    err.SetError(this.txtEngineNumber, "please enter Engine Number");
+                    return;
+                }
+
+                DataTable dt = new DataTable();
+                DataColumn colChasisNumber = new DataColumn("ChasisNumber", typeof(string));
+                dt.Columns.Add(colChasisNumber);
+
+
+                objVehicle.ChasisNumber = txtChasisNumber.Text;
+                objVehicle.EngineNumber = txtEngineNumber.Text;
+                objVehicle.Make = txtMake.Text;
+                objVehicle.Model = txtModel.Text;
+                int.TryParse(txtYear.Text, out year);
+                txtYear.Text =txtYear.ToString();
+
+
+                DataRow row = dt.NewRow();
+                row["ChasisNumber"] = txtChasisNumber;
+                dt.Rows.Add(row);
+
+                grdVehicle.DataSource = null;
+                lstVehicle.Add(objVehicle);
+                grdVehicle.Refresh();
+                grdVehicle.DataSource = dt;
+
+
+            }
+
+            catch (Exception Ex)
+            {
+                MessageBox.Show(Ex.Message);
+
+            }
+        }
+
+        
+    }
+}
